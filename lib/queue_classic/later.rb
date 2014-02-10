@@ -10,7 +10,11 @@ module QC
     DEFAULT_COLUMNS = ["id", "q_name", "method", "args", "created_at", "not_before"]
 
     def format_custom(custom, message)
-      return ", #{custom.send(message).join(', ')}" unless custom.empty?
+      values = custom.send(message).map do |v|
+        v.nil? ? "NULL" : v
+      end
+
+      return ", #{values.join(', ')}" unless custom.empty?
       ''
     end
 
