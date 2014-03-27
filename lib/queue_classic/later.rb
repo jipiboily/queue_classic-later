@@ -39,7 +39,7 @@ module QC
 
       def insert(q_name, not_before, method, args, custom={})
         QC.log_yield(:action => "insert_later_job") do
-          s = "INSERT INTO #{QC::Later::TABLE_NAME} (q_name, not_before, method, args) VALUES ($1, $2, $3, $4)"
+          s = "INSERT INTO #{QC::Later::TABLE_NAME} (q_name, not_before, method, args#{QC::Later::format_custom(custom, :keys)}) VALUES ($1, $2, $3, $4#{QC::Later::format_custom(custom, :values)})"
           QC.default_conn_adapter.execute(s, q_name, not_before, method, JSON.dump(args))
         end
       end
